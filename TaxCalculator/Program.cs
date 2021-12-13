@@ -10,9 +10,24 @@
     {
         static void Main(string[] args)
         {
-            using var host = CreateHostBuilder(args).Build();
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Invalid args");
+                return;
+            }
 
-            Console.WriteLine(Calculate(host.Services, 1001));
+            using var host = CreateHostBuilder(args).Build();
+            foreach(var command in args)
+            {
+                int salary;
+                if(!int.TryParse(command, out salary))
+                {
+                    Console.WriteLine($"Invalid arg {command}");
+                    continue;
+                }
+
+                Console.WriteLine(Calculate(host.Services, salary));
+            }
         }
 
         public static int Calculate(IServiceProvider services, int salaryValue)
